@@ -1,0 +1,24 @@
+// Claims Dashboard Core Measures
+
+Total Billed :=
+SUM ( fact_claims[BilledAmt] )
+
+Total Allowed :=
+SUM ( fact_claims[AllowedAmt] )
+
+Total Paid :=
+SUM ( fact_claims[PaidAmt] )
+
+Collections % :=
+DIVIDE ( [Total Paid], [Total Allowed] )
+
+Denial Rate % :=
+VAR Denied =
+    CALCULATE (
+        COUNTROWS ( fact_claims ),
+        fact_claims[Status] = "Denied"
+    )
+VAR Submitted =
+    COUNTROWS ( fact_claims )
+RETURN
+    DIVIDE ( Denied, Submitted )
